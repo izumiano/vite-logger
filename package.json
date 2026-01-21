@@ -1,8 +1,13 @@
 {
-	"name": "vite-logger",
-	"private": true,
-	"version": "0.0.0",
+	"name": "@izumiano/vite-logger",
+	"version": "0.0.1",
+	"author": "izumiano",
+	"license": "ISC",
 	"type": "module",
+	"repository": "https://github.com/izumiano/vite-logger",
+	"publishConfig": {
+		"@izumiano:registry": "https://npm.pkg.github.com"
+	},
 	"scripts": {
 		"dev": "vite --host",
 		"typecheck": "tsc --watch --noEmit -p tsconfig.json",
@@ -11,6 +16,9 @@
 		"lintFix": "biome check --write",
 		"preview": "npm run build && vite preview --host",
 		"test": "vitest"
+	},
+	"peerDependencies": {
+		"@izumiano/vite-plugin-logger": "^0.0.1"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.3.11",
