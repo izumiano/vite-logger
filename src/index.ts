@@ -1,9 +1,5 @@
-let _logUrl: string | undefined;
+const logUrl: string = "undefined"; // this value will be replaced by vite-plugin-logger at build time
 const logs: { timestamp: number; message: string }[] = [];
-
-export function init({ logUrl }: { logUrl?: string }) {
-	_logUrl = logUrl;
-}
 
 function handleArgs(...obj: unknown[]) {
 	const first = obj[0];
@@ -60,11 +56,7 @@ export function traceWithStacktrace(...obj: unknown[]) {
 }
 
 export function sendLogs() {
-	if (!_logUrl) {
-		logError("Can't send logs as log url has not been set");
-		return;
-	}
-	const request = new Request(_logUrl, {
+	const request = new Request(logUrl, {
 		body: JSON.stringify(logs),
 		method: "POST",
 	});
