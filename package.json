@@ -18,7 +18,7 @@
 		"test": "vitest"
 	},
 	"peerDependencies": {
-		"@izumiano/vite-plugin-logger": "^0.0.1"
+		"@izumiano/vite-plugin-logger": "^0.0.2"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.3.11",

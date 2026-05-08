@@ -2,13 +2,33 @@ const logUrl: string = "undefined"; // this value will be replaced by vite-plugi
 const logs: { timestamp: number; message: string }[] = [];
 
 function handleArgs(...obj: unknown[]) {
-	const first = obj[0];
-	const second = obj[1];
+	const logType = obj[0];
+	const firstIdentifier = obj[1];
+	const secondIdentifier = obj[2];
 
-	obj[0] = `%c${first} ${second}`;
-	obj[1] = "color: gray;";
+	// console.log({ ...obj });
 
-	obj.splice(2, 0, ...["color: gray;", "color: #bbbbbb;"]);
+	if (firstIdentifier) {
+		if (secondIdentifier) {
+			obj[0] = `%c[${logType}] [${firstIdentifier}] %c[${secondIdentifier}]`;
+			obj[1] = "color: gray;";
+			obj[2] = "color: #bbbbbb;";
+		} else {
+			obj[0] = `%c[${logType}] [${firstIdentifier}]`;
+			obj[1] = "color: gray;";
+			obj.splice(2, 1);
+		}
+	} else if (secondIdentifier) {
+		obj[0] = `%c[${logType}] %c[${secondIdentifier}]`;
+		obj[1] = "color: gray;";
+		obj[2] = "color: #bbbbbb;";
+	} else {
+		obj[0] = `%c[${logType}]`;
+		obj[1] = "color: gray;";
+		obj.splice(2, 1);
+	}
+
+	// console.log({ first: logType, second: firstIdentifier, obj });
 
 	return obj;
 }
@@ -19,38 +39,38 @@ export function log(...obj: unknown[]) {
 }
 
 export function logVerbose(...obj: unknown[]) {
-	console.error(...handleArgs("[VERBOSE]", ...obj));
+	console.error(...handleArgs("VERBOSE", ...obj));
 
 	handleExternalLogs("[VERBOSE]", ...obj);
 }
 
 export function logError(...obj: unknown[]) {
-	console.error(...handleArgs("[ERROR]", ...obj));
+	console.error(...handleArgs("ERROR", ...obj));
 
 	handleExternalLogs("[ERROR]", ...obj);
 }
 
 export function logWarn(...obj: unknown[]) {
-	console.warn(...handleArgs("[WARN]", ...obj));
+	console.warn(...handleArgs("WARN", ...obj));
 
 	handleExternalLogs("[WARN]", ...obj);
 }
 
 export function trace(...obj: unknown[]) {
-	console.debug(...handleArgs("[TRACE]", ...obj));
+	console.debug(...handleArgs("TRACE", ...obj));
 
 	handleExternalLogs("[TRACE]", ...obj);
 }
 
 export function traceWarn(...obj: unknown[]) {
-	console.warn(...handleArgs("[TRACE]", ...obj));
+	console.warn(...handleArgs("TRACE", ...obj));
 
 	handleExternalLogs("[TRACE]", "[WARN]", ...obj);
 }
 
 export function traceWithStacktrace(...obj: unknown[]) {
 	const stackTrace = new Error().stack;
-	console.debug(...handleArgs("[TRACE]", ...obj, stackTrace));
+	console.debug(...handleArgs("TRACE", ...obj, stackTrace));
 
 	handleExternalLogs("[TRACE]", ...obj, stackTrace);
 }
